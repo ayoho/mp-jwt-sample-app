@@ -5,6 +5,7 @@ Welcome to the MP JWT Sample Application! This application demonstrates some of 
 - [Run it now](#run-it-now)
 - [MP JWT 1.2 features](#mp-jwt-12-features)
 - [Project overview](#project-overview)
+- [Application overview](#application-overview)
 - [Building the application](#building-the-application)
 - [Running the application](#running-the-application)
 - [Interacting with the application](#interacting-with-the-application)
@@ -103,6 +104,64 @@ The project makes use of the following technologies:
 ### Liberty Maven plugin
 
 The [Liberty Maven plugin](https://github.com/OpenLiberty/ci.maven) allows you to manage a Liberty server as part of your Maven build lifecycle. This sample application makes use of the plugin to package the app and deploy it onto a Liberty server with as little as one command.
+
+## Application overview
+
+The highlights of the application are:
+
+- [JAX-RS resource](#jax-rs-resource)
+- [Server configuration](#server-configuration)
+- [MP Config source](#mp-config-source)
+
+### JAX-RS resource
+
+The JAX-RS resource is a Java class that defines the endpoint and security constraints for that resource:
+```java
+@Path("/endp")
+@DenyAll
+@RequestScoped
+public class RolesEndpoint {
+
+    @GET
+    @Path("/echo")
+    @RolesAllowed("Echoer")
+    public String echoInput(@Context SecurityContext sec, @QueryParam("input") String input) {
+        Principal user = sec.getUserPrincipal();
+        return input + ", user="+user.getName();
+    }
+}
+```
+
+The configuration of the resource is pretty simple. In a nutshell, this resource provides a `/endp/echo` endpoint that serves HTTP `GET` requests to users in the `"Echoer"` role. If authorized, the endpoint returns a string that contains the Principal name of the authenticated user alongside the value of the `"input"` query parameter that is sent in the request. If the user is not authorized, a 401 will be returned.
+
+With the `mpJwt-1.2` or `microProfile-4.0` feature enabled, authorization will be determined based on the MP JWT configuration in the server and application. Any authorized request to this endpoint must therefore include a valid JWT in accordance with the MP JWT and application configurations.
+
+### Server configuration
+
+With Open Liberty, the server configuration isn't much more than enabling a feature:
+
+```xml
+<featureManager>
+    <feature>microProfile-4.0</feature>
+</featureManager>
+```
+
+This is the only server configuration typically necessary to use MP JWT 1.2 functionality. The `mpJwt-1.2` feature can also be specified on its own if the other MicroProfile 4.0 features aren’t needed.
+
+### MP Config source
+
+The MP Config source contains the remaining configuration properties needed for the application to work:
+
+```
+mp.jwt.decrypt.key.location=/privateKey.pem
+mp.jwt.verify.audiences=s6BhdRkqt3,testing
+mp.jwt.verify.publickey.location=/publicKey.pem
+mp.jwt.verify.issuer=https://server.example.com
+```
+
+In our case, these properties are defined in the `META-INF/microprofile-config.properties` file.
+
+The [New MicroProfile Config properties](#new-microprofile-config-properties) section provides some detail about these properties and their usage.
 
 ## Building the application
 
