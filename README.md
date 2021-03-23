@@ -9,6 +9,7 @@ Welcome to the MP JWT Sample Application! This application demonstrates some of 
 - [Building the application](#building-the-application)
 - [Running the application](#running-the-application)
 - [Interacting with the application](#interacting-with-the-application)
+- [Samples](#samples)
 
 ## Run it now
 
@@ -49,7 +50,7 @@ This property allows you to specify the name of the cookie that is expected to c
 
 #### `mp.jwt.verify.audiences`
 
-This property allows you to create list of allowable audience values. At least one of these must be found in the `"aud"` claim of the JWT. Previously, this had to be configured in the server.xml file. Now you can configure the audiences in the MicroProfile Config property as follows:
+This property allows you to create list of allowable audience values. At least one of these must be found in the `"aud"` claim of the JWT. Previously, this had to be configured in the `server.xml` file. Now you can configure the audiences in the MicroProfile Config property as follows:
 
 ```
 mp.jwt.verify.audiences=conferenceService,adminService
@@ -69,7 +70,7 @@ mp.jwt.decrypt.key.location=/path/to/privatekey.pem
 
 #### `mp.jwt.verify.publickey.algorithm`
 
-This property allows you to control the public key signature algorithm that is supported by the MP JWT endpoint. The default value is `"RS256"` if not specified. Previously, this had to be configured in the server.xml file. Now you can configure the public key algorithm used for verification of the JWT in the MicroProfile Config property as follows:
+This property allows you to control the public key signature algorithm that is supported by the MP JWT endpoint. The default value is `"RS256"` if not specified. Previously, this had to be configured in the `server.xml` file. Now you can configure the public key algorithm used for verification of the JWT in the MicroProfile Config property as follows:
 
 ```
 mp.jwt.verify.publickey.algorithm=ES256
@@ -265,3 +266,37 @@ A successful endpoint response should be an `HTTP 200` and something like the fo
 ```
 Hello, jdoe@example.com
 ```
+
+## Samples
+
+You can use these sample JWTs to try out requests to the protected resource.
+
+**Note:** These JWTs will be considered expired by the Liberty server without modification. If you want to use these JWTs, you will need to add the following to the `server.xml` file:
+
+```xml
+<mpJwt id="myMpJwt" clockSkew="99999h" >
+```
+
+Doing so will allow old tokens to be allowed through (or at least not rejected because they were issued too long ago).
+
+Sample JWE:
+```
+eyJjdHkiOiJKV1QiLCJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAifQ.LgNRqCK6_IyB2gvCGehNx2GMivq1GP5zPeyTJHNvgaNBAKCF2C1Rv8gtibzbHTrVV6zSiwS_beyQJ3rY0t3fb_cfZu1zEstPJ5xO3YIJPOBP0kHniLr49PC5YYwBMcoH3pmnmE11w5_nbHHvSiHnrUT6OCOfZIfVqi0Qw5wy_Cd3W_AMbr1k0ZOEna3lfq8Lyi9vKNxhyBhtNeVcY6MFBe6bJTYDstPQG1QVu6T-NNIp7YyIcfxzNUjvQTH2OCzrGCnb9OyUsz0CxuzKK4yBdSoaE0y_LDHDhiSijQdz9pXl8Bvlqs5fCXbrZxH842sePhV4f21S0GC1Fr9VZCWrvQ.d0vXIob289IEZwMX.nnXIEjQCWPZ3-NPy1O3rzlv79Q4-OPi3JAM3DRT_33E1NFoFYJRLzqqTYwP9r8tcUVNDwgsK0IJ7LBMCvhuyBFFzUwcx9btzr-cKIhQDNl9lG9YuKS50JaRXc3kfi7NaTL4alJuwRUS4ZcvVu637ldFqssfWWqzrd78GIt7dz9YqYAIySjSbGHRzslcKaJjPBS3SjtmfeYEiY2e-cXyBsGusvBMpuOxRKbfKuIQn0CFrP5U-dPvxDQdH09sPHkMaQqGgJHs0bvR8RXTVPn_7UpNmi4cfLbOs6tJ9MqKk5g2Ar8nyWTpYYahAjk77kLEeLXhiMbJPoIQzDJ4dOGLHr06lIGrKjTaSi660BzObSO4-DMX42WKxU7CGlITgpQQp04fw3LRXp56ovhcy0B4vVDqpl12Fo3D5SEE6itiT50cwJnCYRrjxSuJsNaTawCF4hUrQ3WNeM64q2zEeI3Qh5Vsob3gy1dEdDnmikGpdowDNGxYNzrKwqQZc6WMU7_s-Fakj4GhJloxxfj0ulokPlxrRyLh9mdPRbGVDi6RMOjRAdGS2JLEpZMAYFyaTPrE37wJAOuxQ1bUKKzr1QJrcLn4MFtGH8gsJ7aTmbV0Ly1WF1UwlVD6de4vsPQZWG7HP8HbQgn7ZVSo7PddO4xtnTWaKt4TyXVw0bzXt4lw9DiupoBSyKEdxB7vhqSvXRIJ0pnxXfprmO_JXjkBcpMK98r0km0XOG4cPetiqwdMFxUieM1SSDyQUcq2n1zIPhjLOHHWCEpy8QolLu_mCl5N-U-mgpAPQIe-uUgRMGxcPAbiEf5uo-nf2eEMm_0-LnjwJGIUGRU3fKVyBfsITGihTvNRNp2jTFsa8_G-aN7V0QJWZyvWXcZuT7ec0y7XZcH4GCGfmspvk8v3k6c1tIzliSkJ_u5vHYF6E8WGi93i8YJIQFuFn9QbTXn234J9TfGvCjhjWju0_bEDYSHZFGrZffOxbTNaBX0h0TqV7NXHxAy6I2u65uFOWqr1HjQQIdqw-R2Rcvu_skGK9e_yON1RaWWF3zI-_t-1XMWapyl1P-KxyFAB7Ffo-et_S4zkfz9Uam6gxCzkrXFmvpICOyW4dyaS7uGApqYwtCMdZuSAcR7auboi_hKMKJpI8pglWvnMs5fhFaB-zJA6nc4D8xG6ITlBCOnIWHXOFVODlfA9Yb_AnF5OtSIrCQL9DLEqBWH6f2u1ughUPu9niuzOyp8_FkH_ljiI7D305FKQG9TeahyhAZb68o4REHLzxpFHYTHsuxiJnwmwRZx4LxadRyluMa59TajlP_zLA51lGAmSaWrvAXeR_2GhOr1YZw2dB_X2E9apy8wCwQwfLeXjLq_ucGnxd7Uaj__lI-1R4XwEfM2ipQKy5K3AbLnxQsUzDB2ebeDd7-mZ7rZMVGW7NSJsnqu0QCQ2gEnQM5swt5fSw6iMlDlJH-u017QcRPHV5I3e9pFaVUht36DLSudpFu2nKjNSpQ0Qr3muMS5orO2rZgMidOIBmydbiet67EOk6D0-GQY7c0wzRBHsn4ti-fQrNj_k7HJ_wtEBeZ_z4W5Yq8mkGhW0dw97yxl5_wX4rTY-7CjghFZbCqG5VqZwzdJTtN6OQKcD2rqdv_tJHqi8s8ZQK1DGgOqiHVXukJmY6c_FpmK-vlGcBcL06BasutlU8FbMVAUO0mfe7EmIgYqFsnurAmhOduz_krNFKgCVTReXs12ljiJLArbxANatkRaaUC3QhWigkwzJKtIIzmNp42Gk1CXPNA9TRggVlDfHipIrvrKbQ84rISh6X0QtL_hkvE1UPHOihLMvUt2_fSDhqyCpRPBFe53fHaUFQpklnlVfRx0_61wNuMkX4w3apBbD_daIBp2hDQPAiAFVctHIBECJx7pYRWeeXqiu67eI2oEt9iMJwAFjqQn_tLxSSG6rRNJuHiGY4Xu197dLggKA1PwWgGLfr-n472KR_qfTh-4Yo7-mgNmQCOMDzoCYwZbIks1fBA0pKfvL1A0q_AIz2k9b16Uv2BDmPDbKKoocijpFcO2XTwfIGlNqTWlJll7Ba-J5J-oUfNTVc4omPJZNAtSclQsrsqqk7E5HWOMi-YqO5NuCEzABgXnt1wGrbUEwtM--w3OockWAtZrC1AyEl-A-A.MdMK8N5TlroFsT5X9x6vMw
+```
+
+- Requires `privateKey.pem` to decrypt the JWE
+- Nested JWS is signed using `RS256`
+- Requires `publicKey.pem` for signature verification of the nested JWS
+
+Sample JWS (RS256):
+```
+eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL3NlcnZlci5leGFtcGxlLmNvbSIsImp0aSI6ImEtMTIzIiwic3ViIjoiMjQ0MDAzMjAiLCJ1cG4iOiJqZG9lQGV4YW1wbGUuY29tIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiamRvZSIsImF1ZCI6InM2QmhkUmtxdDMiLCJleHAiOjE2MTY0NDY2ODksImlhdCI6MTYxNjQ0NjM4OSwiYXV0aF90aW1lIjoxNjE2NDQ2Mzg5LCJyb2xlcyI6WyJFY2hvZXIiXSwiZ3JvdXBzIjpbIkVjaG9lciIsIlRlc3RlciIsImdyb3VwMSIsImdyb3VwMiJdLCJjdXN0b21TdHJpbmciOiJjdXN0b21TdHJpbmdWYWx1ZSIsImN1c3RvbUludGVnZXIiOjEyMzQ1Njc4OSwiY3VzdG9tRG91YmxlIjozLjE0MTU5MjY1MzU4OTc5MywiY3VzdG9tQm9vbGVhbiI6dHJ1ZSwiY3VzdG9tU3RyaW5nQXJyYXkiOlsidmFsdWUwIiwidmFsdWUxIiwidmFsdWUyIl0sImN1c3RvbUludGVnZXJBcnJheSI6WzAsMSwyLDNdLCJjdXN0b21Eb3VibGVBcnJheSI6WzAuMSwxLjEsMi4yLDMuMyw0LjRdLCJjdXN0b21PYmplY3QiOnsibXktc2VydmljZSI6eyJncm91cHMiOlsiZ3JvdXAxIiwiZ3JvdXAyIl0sInJvbGVzIjpbInJvbGUtaW4tbXktc2VydmljZSJdfSwic2VydmljZS1CIjp7InJvbGVzIjpbInJvbGUtaW4tQiJdfSwic2VydmljZS1DIjp7Imdyb3VwcyI6WyJncm91cEMiLCJ3ZWItdGllciJdfX19.pN7F04bM9UTqYzF3Ex7Dd-WgX8BxzdUVdaRtqhLW90AeLw5Rmu6m6erHpGeBNmol0iPfQjYB2vxmu_Syt-5v84SR0SNeA23msrO7LPJVr63TKPkiAAVla4JjOh3wHKDwFX7GLqm4G22ht6YMRy3qhFfuEJPKJxfFv2g1XfhW5-A2Sa6tTnjMFsN50dIQNg2NuBeA8WRF383mJVSp6V30OhV2bjj-E_hHWEvnsbQiUko37Z25U_3Z2mLb82_Xz2j33S2keHTggE43n0fCeWWy-7-d4EuUzDIymdXN3VKvZd7svSolau_WWhOvqpTp0g9ITsc1nILj--yxZNeQjrLUXTfEomgrwcwnWtV3fx1UDsDOWrY3T5gorE5KILW8XXyeHZ4X7jpkXZLSBtlD7BvPq0DYrlye8jHvCjXRBgPHUdaq-jfFpexo_JweR8oNJDYL1K2megNixFnq56tiu3lnZyVHyA_ZLnWSLqPbuK6pP2NpMSk-l5g389zTHf13vAnNXgGtsGqsyCQZvp6G-qIlJRC2bi-3AWcObV4BPHFV1EBQVBiTYB6kzILd9uBPvM3vNte-zSZZOTHuzFO-pTGCef8nzKBYRyOEsXYdwlH5fBHgGxrBQi4YjJ8QN_25CqcH4_atKRJ335KXpY9QVkrV7e2FDU-J73-HrYKjXrTh87I
+```
+- Requires `publicKey.pem` for signature verification
+
+Sample JWS (ES256):
+```
+eyJraWQiOiIvZWNQcml2YXRlS2V5LnBlbSIsInR5cCI6IkpXVCIsImFsZyI6IkVTMjU2In0.eyJpc3MiOiJodHRwczovL3NlcnZlci5leGFtcGxlLmNvbSIsImp0aSI6ImEtMTIzIiwic3ViIjoiMjQ0MDAzMjAiLCJ1cG4iOiJqZG9lQGV4YW1wbGUuY29tIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiamRvZSIsImF1ZCI6InM2QmhkUmtxdDMiLCJleHAiOjE2MTY0NDY1ODAsImlhdCI6MTYxNjQ0NjI4MCwiYXV0aF90aW1lIjoxNjE2NDQ2MjgwLCJyb2xlcyI6WyJFY2hvZXIiXSwiZ3JvdXBzIjpbIkVjaG9lciIsIlRlc3RlciIsImdyb3VwMSIsImdyb3VwMiJdLCJjdXN0b21TdHJpbmciOiJjdXN0b21TdHJpbmdWYWx1ZSIsImN1c3RvbUludGVnZXIiOjEyMzQ1Njc4OSwiY3VzdG9tRG91YmxlIjozLjE0MTU5MjY1MzU4OTc5MywiY3VzdG9tQm9vbGVhbiI6dHJ1ZSwiY3VzdG9tU3RyaW5nQXJyYXkiOlsidmFsdWUwIiwidmFsdWUxIiwidmFsdWUyIl0sImN1c3RvbUludGVnZXJBcnJheSI6WzAsMSwyLDNdLCJjdXN0b21Eb3VibGVBcnJheSI6WzAuMSwxLjEsMi4yLDMuMyw0LjRdLCJjdXN0b21PYmplY3QiOnsibXktc2VydmljZSI6eyJncm91cHMiOlsiZ3JvdXAxIiwiZ3JvdXAyIl0sInJvbGVzIjpbInJvbGUtaW4tbXktc2VydmljZSJdfSwic2VydmljZS1CIjp7InJvbGVzIjpbInJvbGUtaW4tQiJdfSwic2VydmljZS1DIjp7Imdyb3VwcyI6WyJncm91cEMiLCJ3ZWItdGllciJdfX19.brc6WPUEFs4B-S7_71XnahvacXO7O1yq_wTREMJd1Gfu-Jpd9WKbcK01ephofvD7virYlhrd-JG9IUWz9RZkvg
+```
+- Requires the `mp.jwt.verify.publickey.algorithm` property to be set to `ES256` because `RS256` is the default signature algorithm
+- Requires `ecPublicKey.pem` for signature verification
