@@ -11,6 +11,8 @@ Welcome to the MP JWT Sample Application! This application demonstrates some of 
 - [Interacting with the application](#interacting-with-the-application)
 - [Samples](#samples)
 
+Much of the source for this sample application (e.g. Java classes and PEM files) is taken from the [MicroProfile JWT TCK project](https://github.com/eclipse/microprofile-jwt-auth/tree/master/tck) under the Apache 2.0 license.
+
 ## Run it now
 
 1. Clone this repository
