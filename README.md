@@ -2,11 +2,21 @@
 
 Welcome to the MP JWT Sample Application! This application demonstrates some of the capabilities of the MicroProfile JWT specification, specifically the new features of the MP JWT 1.2 specification and the corresponding feature in the Open Liberty application server.
 
+- [Run it now](#run-it-now)
 - [MP JWT 1.2 features](#mp-jwt-12-features)
 - [Project overview](#project-overview)
 - [Building the application](#building-the-application)
 - [Running the application](#running-the-application)
 - [Interacting with the application](#interacting-with-the-application)
+
+## Run it now
+
+1. Clone this repository
+1. In the project root, run
+    1. `$ mvn package`
+    1. `$ mvn liberty:dev`
+1. Interact with the app
+1. Type `Ctrl + C` to stop the server.
 
 ## MP JWT 1.2 features
 
