@@ -1,0 +1,12 @@
+<server>
+
+    <featureManager>
+        <feature>microProfile-4.0</feature>
+    </featureManager>
+
+    <httpEndpoint id="defaultHttpEndpoint" host="*"
+        httpPort="${default.http.port}" httpsPort="${default.https.port}" />
+
+    <webApplication location="mp-jwt-app.war" contextRoot="/"/>
+
+</server>
