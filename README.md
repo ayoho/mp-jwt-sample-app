@@ -10,6 +10,7 @@ Welcome to the MP JWT Sample Application! This application demonstrates some of 
 - [Running the application](#running-the-application)
 - [Interacting with the application](#interacting-with-the-application)
 - [Samples](#samples)
+- [Troubleshooting](#troubleshooting)
 
 Much of the source for this sample application (e.g. Java classes and PEM files) is taken from the [MicroProfile JWT TCK project](https://github.com/eclipse/microprofile-jwt-auth/tree/master/tck) under the Apache 2.0 license.
 
@@ -115,6 +116,7 @@ The highlights of the application are:
 - [JAX-RS resource](#jax-rs-resource)
 - [Server configuration](#server-configuration)
 - [MP Config source](#mp-config-source)
+- [More on security](#more-on-security)
 
 ### JAX-RS resource
 
@@ -165,6 +167,65 @@ mp.jwt.verify.issuer=https://server.example.com
 In our case, these properties are defined in the `META-INF/microprofile-config.properties` file.
 
 The [New MicroProfile Config properties](#new-microprofile-config-properties) section provides some detail about these properties and their usage.
+
+### More on security
+
+The MP JWT feature will automatically look for (and require) a JWT in requests sent to protected resources (e.g. paths with `@RolesAllowed` defined). Several checks are made to validate the JWT and authorize the request.
+
+#### Roles and groups
+
+To be authorized, inbound JWTs must include a claim whose value can be mapped to whatever security roles are defined by the application.
+
+The endpoint provided in this sample application specifies:
+
+```java
+@RolesAllowed("Echoer")
+```
+
+This means that for an inbound JWT to be considered valid, the JWT must have a claim that indicates the user is in the `"Echoer"` role.
+
+By default, the MP JWT feature will map the values in the `"groups"` claim of the JWT to roles. For example, assume your JWT includes the claim:
+
+```JSON
+"groups": ["Echoer","Tester","group1","group2"],...
+```
+
+By default, the MP JWT feature will consider each of those values as roles that the user is in. Since the value `"Echoer"` is included in that list, the token will be considered authorized.
+
+**Note:** If your JWT does not include a `"groups"` claim, you'll have to add the `groupNameAttribute` to your `<mpJwt>` configuration in `server.xml`. The value of the attribute should be set to the claim that contains the roles for the user.
+
+For example, assume your JWT does not have a `"groups"` claim. Instead it has:
+
+```JSON
+"roles": ["Echoer"],...
+```
+
+To successfully validate the token, you would have to add the following to the `server.xml`:
+
+```xml
+<mpJwt id="myMpJwt" groupNameAttribute="roles" ... />
+```
+
+#### User name, upn, and sub
+
+The inbound JWT must contain some kind of user identifier - a value that can be used to uniquely identify the user within the realm of the application. In practice this is typically something like an email address or UUID. If an identifier cannot be found, the JWT will be rejected.
+
+The MP JWT specification requires that a JWT contain a `"upn"` claim to use as the user identifier. For JWTs that are not MP JWT compliant, a `"sub"` (subject) claim is typically present that can be used for the same purpose.
+
+**Note:** If the JWT does not contain a `"upn"` claim, you'll have to add the `userNameAttribute` to your `<mpJwt>` configuration in `server.xml`. The value of the attribute should be set to the claim whose value should be used to uniquely identify the user.
+
+For example, assume your JWT does not have a `"upn"` claim, but does have a `"sub"` claim:
+
+```JSON
+"sub": "jdoe@example.com",...
+```
+
+To successfully validate the token, you would have to add the following to the `server.xml`:
+
+```xml
+<mpJwt id="myMpJwt" userNameAttribute="sub" ... />
+```
+
 
 ## Building the application
 
@@ -280,7 +341,7 @@ You can use these sample JWTs to try out requests to the protected resource.
 **Note:** These JWTs will be considered expired by the Liberty server without modification. If you want to use these JWTs, you will need to add the following to the `server.xml` file:
 
 ```xml
-<mpJwt id="myMpJwt" clockSkew="99999h" >
+<mpJwt id="myMpJwt" clockSkew="99999h" />
 ```
 
 Doing so will allow old tokens to be allowed through (or at least not rejected because they were issued too long ago).
@@ -306,3 +367,23 @@ eyJraWQiOiIvZWNQcml2YXRlS2V5LnBlbSIsInR5cCI6IkpXVCIsImFsZyI6IkVTMjU2In0.eyJpc3Mi
 ```
 - Requires the `mp.jwt.verify.publickey.algorithm` property to be set to `ES256` because `RS256` is the default signature algorithm
 - Requires `ecPublicKey.pem` for signature verification
+
+## Troubleshooting
+
+### 401 response and CWWKS5523E error message
+
+**Problem**
+
+If you get a 401 for your request and see this in the server logs:
+
+```
+[INFO] [ERROR   ] CWWKS5523E: The MicroProfile JWT feature cannot authenticate the request because the token that is included in the request cannot be validated. CWWKS6025E: The JSON Web Token (JWT) is not valid because its expiration ('exp') claim is either missing or the token expired. The expiration claim is [2021-03-22T15:58:09-0500]. The current time minus the clock skew is [2021-03-24T11:15:59-0500]. The configured clock skew is [300] seconds.
+```
+
+**Solution**
+
+See the note at the beginning of the [Samples](#samples) section. You'll need to add this to your `server.xml`:
+
+```xml
+<mpJwt id="myMpJwt" clockSkew="99999h" />
+```
