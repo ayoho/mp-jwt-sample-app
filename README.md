@@ -231,7 +231,11 @@ The JAX-RS resource in this application defines a `/endp/echo` endpoint. The end
 - Requires authentication
 - Authenticated user must be in the `"Echoer"` role
 
-To authenticate requests to this endpoint, we include a JWT in the request. 
+By default the application will be available at `http://localhost:9080/endp/echo`.
+
+To authenticate requests to this endpoint, we include a JWT in the request. You can find [sample JWTs to try out with the application in the Samples section](#samples).
+
+**Recommendation:** I recommend interacting with the application using [Postman](https://www.postman.com/). It provides a pretty clear UI for executing HTTP requests, and lets you easily manipulate headers, parameters, and the like. You could also interact with the application in a browser or cURL, depending on your preference.
 
 ### Invoking with a bearer token
 
@@ -239,7 +243,7 @@ Invoking the protected resource with a bearer token is done like so:
 
 ```
 GET /endp/echo HTTP/1.1
-Host: server.example.com
+Host: localhost:9080
 Authorization: Bearer <JWT>
 
 input=Hello
@@ -253,7 +257,7 @@ Invoking the protected resource with a JWT in a cookie is done like so:
 
 ```
 GET /endp/echo HTTP/1.1
-Host: server.example.com
+Host: localhost:9080
 Cookie: <cookie-name>=<JWT>
 
 input=Hello
